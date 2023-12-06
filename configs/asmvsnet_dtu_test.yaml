@@ -1,0 +1,61 @@
+environ:
+  seed: 5
+  deterministic: False
+model:
+  name: "ASMVSNet"
+  pretrained_model: "checkpoints/asmvsnet_dtu_sp.pth"
+  params:
+    nscale: 1
+    nsrc: 4
+    n_depths: 192
+    mindepth: 0.5
+    need_conf: True
+    n_downsample: 2
+    n_iters: 12
+    n_iters_val: 4
+    n_gru_layers: 2
+    base_chs: [48, 32, 16]
+    hidden_dims: [64]
+    motion_dim: 64
+    feat_mdconv: False
+    gru_mdconv: False
+    use_attn_loss: True
+    sparse_dropout: False 
+    sparse_infer: False
+    lambda_ce: 10
+    lambda_kl: 0.0001
+data:
+  name: "DTU"
+  tr_list: "./datasets/lists/dtu/train.txt"
+  te_list: "./datasets/lists/dtu/test.txt"
+  random_scale: False
+  robust_train: False
+  path: '/data1/zhou/dataset/dtu_ucs/'
+  ndepths: 192
+  max_h: 1200
+  max_w: 1600
+solver:
+  epochs: 30 
+  batch_size: 1
+  step_decay: 1
+  freeze_bn: True
+  optimizer:
+    name: 'AdamW'
+    params:
+      lr: 0.0001
+      weight_decay: .00001
+      eps: 1e-8
+    grad_clip:
+      max_norm: 1.0
+  lr_policy:
+    name: 'one_cycle'
+    params:
+      max_lr: 0.0002
+      total_steps: 75100
+      pct_start: 0.01
+      cycle_momentum: False
+      anneal_strategy: linear
+mixed_precision: True
+snap:
+  path: "/data1/zhou/snap_dir"
+  tag: "s1"
