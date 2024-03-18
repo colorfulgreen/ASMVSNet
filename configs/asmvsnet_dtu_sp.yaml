@@ -1,0 +1,35 @@
+model:
+  name: "ASMVSNet"
+  pretrained_model: "./checkpoints/model_sp.pth"
+  params:
+    nsrc: 4
+    n_depths: 192
+    need_conf: True
+    n_downsample: 2
+    n_iters: 12
+    n_iters_val: 6
+    n_gru_layers: 1
+    base_chs: [48, 32, 16]
+    hidden_dims: [64]
+    motion_dim: 64
+    feat_mdconv: False
+    gru_mdconv: True
+    use_attn_loss: True
+    sparse_dropout: True
+    sparse_infer: True 
+    lambda_ce: 10
+    lambda_kl: 0.0001
+data:
+  name: "DTU"
+  tr_list: "./datasets/lists/dtu/train.txt"
+  te_list: "./datasets/lists/dtu/test.txt"
+  random_scale: False
+  robust_train: False
+  path: '/data/datasets/dtu/'
+  ndepths: 192
+  max_h: 1200
+  max_w: 1600
+mixed_precision: True
+snap:
+  path: "/data/zhou/snap_dir"
+  tag: "sp"
